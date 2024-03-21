@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://dpn6skv3s7boo"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_nkfdi"]
+[ext_resource type="Script" path="res://Settings.gd" id="2_uewab"]
+[ext_resource type="Script" path="res://Engines/DotRenderer.gd" id="3_hvjvq"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_nkfdi")
+
+[node name="Settings" type="Node" parent="."]
+script = ExtResource("2_uewab")
+
+[node name="Renderer" type="Node2D" parent="."]
+script = ExtResource("3_hvjvq")
