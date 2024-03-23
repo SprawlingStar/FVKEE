@@ -5,10 +5,30 @@ extends Node2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#dataPackTest()
-	rendererTest()
+	#rendererTest()
+	engineSetup()
 
 func _process(delta):
-	rendererUpdateTest()
+	for child in get_children():
+		if child is EEngine:
+			child.update(delta)
+
+
+func engineSetup() -> void:
+	var pack = makePack()
+	for child in get_children():
+		if child is EEngine:
+			child.Settings = settings
+			child.setPack(pack)
+			child.setup()
+
+func makePack() -> Datapack:
+	var data = []
+	for i in range(sqrt(settings.numParticles)):
+		for j in range(sqrt(settings.numParticles)):
+			data.append(Vector2(i*settings.particleSpacing,j*settings.particleSpacing) + settings.Bounds / 2 * 0.85)
+	return Datapack.new().create(data)
+
 
 func rendererUpdateTest() -> void:
 	var pack = renderer.FinalPack
@@ -25,7 +45,6 @@ func rendererTest() -> void:
 		for j in range(0,100,10):
 			grid.append(Vector2(i + 300,j + 300))
 	var pack = Datapack.new().create(grid)
-	pack.read()
 	renderer.setPack(pack)
 	renderer.queue_redraw()
 
