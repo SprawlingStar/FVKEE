@@ -1,5 +1,7 @@
 res://main.tscn
-res://Engines/Engine.gd
-res://Engines/Simulator.gd
+res://FunctionPlot.gd
 res://main.gd
+res://Engines/DotRenderer.gd
+res://FunctionPlot2.gd
+res://cutoff.gdshader
 res://Settings.gd

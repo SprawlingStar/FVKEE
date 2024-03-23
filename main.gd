@@ -4,14 +4,17 @@ extends Node2D
 @onready var settings = $Settings
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	densityTest()
+	
 	#dataPackTest()
 	#rendererTest()
-	engineSetup()
+	#ngineSetup()
 
 func _process(delta):
-	for child in get_children():
-		if child is EEngine:
-			child.update(delta)
+	pass
+	#for child in get_children():
+	#	if child is EEngine:
+	#		child.update(delta)
 
 
 func engineSetup() -> void:
@@ -29,6 +32,24 @@ func makePack() -> Datapack:
 			data.append(Vector2(i*settings.particleSpacing,j*settings.particleSpacing) + settings.Bounds / 2 * 0.85)
 	return Datapack.new().create(data)
 
+
+func densityTest() -> void:
+	var data = []
+	seed(0)
+	for i in range(400):
+		data.append(Vector2(randf() * 115, randf() * 64))
+	var pack = Datapack.new().create(data)
+	$Simulator.Settings = settings
+	$FunctionPlot.Settings = settings
+	$Simulator.setPack(pack)
+	var densityData = []
+	var densityPack = []
+	for i in range(400):
+		densityData.append($FunctionPlot.exampleFunction(pack.retrieve(i) / Vector2(115,64) * 4))
+		densityPack.append($FunctionPlot.densityAtPoint(pack.retrieve(i),pack))
+	$FunctionPlot.data = densityData
+	$FunctionPlot.updateImage(pack,Datapack.new().create(densityPack))
+	$FunctionPlot.queue_redraw()
 
 func rendererUpdateTest() -> void:
 	var pack = renderer.FinalPack

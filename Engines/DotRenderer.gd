@@ -11,6 +11,8 @@ func update(_delta : float) -> void:
 	queue_redraw()
 
 func _draw():
+	if not FinalPack:
+		return
 	var newPack = Datapack.new().clone(FinalPack)
 	while newPack.length() > 0:
 		#MASSIVE INNEFICENCY WITH CLONING REVISIT
