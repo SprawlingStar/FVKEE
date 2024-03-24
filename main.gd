@@ -1,81 +1,53 @@
 extends Node2D
 
-@onready var renderer = $Renderer
-@onready var settings = $Settings
-# Called when the node enters the scene tree for the first time.
+@export_category("Particle Draw Settings")
+@export var particleColor : Color = Color.LIGHT_BLUE
+@export_range(1,3.5,0.1) var particleRadius : float = 0.3
+@export var drawParticles : bool = true
+
+@export_category("Physics Variables")
+@export_range(-10,10,0.1) var gravity := 9.8
+@export_range(0,1,0.01) var collisionDamping = 0.7
+
+@export_category("Setup")
+@export var numParticles := 100
+@export var particleSpacingPX = 10.0
+@export var startPos : Vector2 = bounds/2 * 0.85
+
+const bounds : Vector2 = Vector2(115,64)
+
+var positions = []
+var velocities = []
+
 func _ready():
-	densityTest()
+	for i in range(sqrt(numParticles)):
+		for j in range(sqrt(numParticles)):
+			positions.append(startPos + Vector2(i,j) * particleSpacingPX)
 	
-	#dataPackTest()
-	#rendererTest()
-	#ngineSetup()
+	for i in range(numParticles):
+		velocities.append(Vector2.ZERO)
 
+func _draw():
+	if not drawParticles:
+		return
+	for pos in positions:
+		draw_circle(pos,particleRadius,particleColor)
+		
 func _process(delta):
-	pass
-	#for child in get_children():
-	#	if child is EEngine:
-	#		child.update(delta)
+	for i in range(len(velocities)):
+		velocities[i] += Vector2.DOWN * gravity * delta
+	for i in range(len(positions)):
+		positions[i] += velocities[i]
+	for i in range(len(positions)): resolveCollisions(i)
+	queue_redraw()
 
-
-func engineSetup() -> void:
-	var pack = makePack()
-	for child in get_children():
-		if child is EEngine:
-			child.Settings = settings
-			child.setPack(pack)
-			child.setup()
-
-func makePack() -> Datapack:
-	var data = []
-	for i in range(sqrt(settings.numParticles)):
-		for j in range(sqrt(settings.numParticles)):
-			data.append(Vector2(i*settings.particleSpacing,j*settings.particleSpacing) + settings.Bounds / 2 * 0.85)
-	return Datapack.new().create(data)
-
-
-func densityTest() -> void:
-	var data = []
-	seed(0)
-	for i in range(400):
-		data.append(Vector2(randf() * 115, randf() * 64))
-	var pack = Datapack.new().create(data)
-	$Simulator.Settings = settings
-	$FunctionPlot.Settings = settings
-	$Simulator.setPack(pack)
-	var densityData = []
-	var densityPack = []
-	for i in range(400):
-		densityData.append($FunctionPlot.exampleFunction(pack.retrieve(i) / Vector2(115,64) * 4))
-		densityPack.append($FunctionPlot.densityAtPoint(pack.retrieve(i),pack))
-	$FunctionPlot.data = densityData
-	$FunctionPlot.updateImage(pack,Datapack.new().create(densityPack))
-	$FunctionPlot.queue_redraw()
-
-func rendererUpdateTest() -> void:
-	var pack = renderer.FinalPack
-	pack.write()
-	for i in range(pack.length()):
-		pack.put(i,pack.retrieve(i) + Vector2(0,1))
-	pack.read()
-	renderer.queue_redraw()
-
-func rendererTest() -> void:
-	renderer.Settings = settings
-	var grid = []
-	for i in range(0,100,10):
-		for j in range(0,100,10):
-			grid.append(Vector2(i + 300,j + 300))
-	var pack = Datapack.new().create(grid)
-	renderer.setPack(pack)
-	renderer.queue_redraw()
-
-func dataPackTest() -> void:
-	var arr := []
-	for i in range(4):
-		arr.append(Vector2(randi(),randi()))
-	var test = Datapack.new().create(arr)
-	test.out()
-	test.read()
-	test.out()
-	test.write()
-	test.out()
+func resolveCollisions(index) -> void:
+	var halfBounds = bounds/2 - Vector2.ONE * particleRadius
+	var pos = positions[index] - bounds/2
+	
+	if abs(pos.x) > halfBounds.x:
+		positions[index].x = halfBounds.x * sign(pos.x) + bounds.x /2
+		velocities[index].x *= -1 * collisionDamping
+	if abs(pos.y) > halfBounds.y:
+		positions[index].y = halfBounds.y * sign(pos.y) + bounds.y /2
+		velocities[index].y *= -1 * collisionDamping

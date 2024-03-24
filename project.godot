@@ -14,6 +14,10 @@ config/name="EE"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
+[editor]
+
+movie_writer/movie_file="C:/Users/treeb/Documents/FVKEE/renders/render.avi"
+
 [rendering]
 
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)

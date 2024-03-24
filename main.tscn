@@ -1,45 +1,18 @@
-[gd_scene load_steps=9 format=3 uid="uid://dpn6skv3s7boo"]
+[gd_scene load_steps=3 format=3 uid="uid://mrh0d3op7c1n"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_nkfdi"]
-[ext_resource type="Script" path="res://Settings.gd" id="2_uewab"]
-[ext_resource type="Script" path="res://Engines/DotRenderer.gd" id="3_hvjvq"]
-[ext_resource type="Script" path="res://Engines/Simulator.gd" id="3_k1yaj"]
-[ext_resource type="Script" path="res://FunctionPlot.gd" id="5_kgtoq"]
-[ext_resource type="Shader" path="res://cutoff.gdshader" id="6_il8xw"]
-[ext_resource type="Script" path="res://FunctionPlot2.gd" id="6_xir14"]
+[ext_resource type="Script" path="res://Visualizer.gd" id="2_kdjes"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pn2hf"]
-shader = ExtResource("6_il8xw")
-
-[node name="Main" type="Node2D"]
+[node name="main" type="Node2D"]
+scale = Vector2(10, 10)
 script = ExtResource("1_nkfdi")
+particleColor = Color(0, 0.647059, 0.941176, 1)
+gravity = 4.3
+numParticles = 100000
+particleSpacingPX = 1.0
 
-[node name="Settings" type="Node" parent="."]
-script = ExtResource("2_uewab")
-particleRadius = 9
-particleBaseColor = Color(0, 0.658824, 0.854902, 1)
-particleSpacing = 20
-gravity = 0.0
-smoothingRadius = 20.0
-
-[node name="Simulator" type="Node2D" parent="."]
-script = ExtResource("3_k1yaj")
-label = NodePath("../DensityLabel")
-
-[node name="Renderer" type="Node2D" parent="."]
-script = ExtResource("3_hvjvq")
-
-[node name="DensityLabel" type="RichTextLabel" parent="."]
-offset_right = 232.0
-offset_bottom = 40.0
-
-[node name="FunctionPlot" type="Sprite2D" parent="."]
-scale = Vector2(10, 10)
+[node name="Visualizer" type="Sprite2D" parent="."]
+visible = false
+show_behind_parent = true
 centered = false
-script = ExtResource("5_kgtoq")
-
-[node name="FunctionPlot2" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_pn2hf")
-scale = Vector2(10, 10)
-centered = false
-script = ExtResource("6_xir14")
+script = ExtResource("2_kdjes")
