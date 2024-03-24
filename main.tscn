@@ -7,12 +7,11 @@
 scale = Vector2(10, 10)
 script = ExtResource("1_nkfdi")
 particleColor = Color(0, 0.647059, 0.941176, 1)
-gravity = 4.3
-numParticles = 100000
-particleSpacingPX = 1.0
+gravity = 0.0
+particleSpacingPX = Vector2(12, 7)
+startPos = Vector2(0, 0)
 
 [node name="Visualizer" type="Sprite2D" parent="."]
-visible = false
 show_behind_parent = true
 centered = false
 script = ExtResource("2_kdjes")
