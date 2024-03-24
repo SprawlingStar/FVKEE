@@ -1,4 +1,4 @@
 res://main.tscn
 res://v1/cutoff.gdshader
-res://Visualizer.gd
 res://main.gd
+res://main.gdshader

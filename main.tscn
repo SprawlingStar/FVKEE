@@ -1,23 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://mrh0d3op7c1n"]
+[gd_scene load_steps=4 format=3 uid="uid://dalqagaqlyveg"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_nkfdi"]
-[ext_resource type="Script" path="res://Visualizer.gd" id="2_kdjes"]
+[ext_resource type="Shader" path="res://main.gdshader" id="1_qwen0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lsito"]
+shader = ExtResource("1_qwen0")
+shader_parameter/lod = 3.351
 
 [node name="main" type="Node2D"]
-scale = Vector2(20, 20)
 script = ExtResource("1_nkfdi")
-particleRadius = 0.1
-gravity = 0.0
-collisionDamping = 1.0
-smoothingRadius = 0.6
-mass = 0.03
-targetDensity = 0.765
-pressureMultiplier = 6.345
-numParticles = 50
-particleSpacingPX = Vector2(12, 7)
-startPos = Vector2(0, 0)
+particleCount = 500
+blurRadius = 50.0
+particleRadius = 8.935
+pressureStrength = 0.09
+collisionDamping = 0.8
+gravity = Vector2(0, 2)
 
-[node name="Visualizer" type="Sprite2D" parent="."]
-show_behind_parent = true
-centered = false
-script = ExtResource("2_kdjes")
+[node name="Control" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_lsito")
+offset_right = 1268.0
+offset_bottom = 653.0
