@@ -4,10 +4,16 @@
 [ext_resource type="Script" path="res://Visualizer.gd" id="2_kdjes"]
 
 [node name="main" type="Node2D"]
-scale = Vector2(10, 10)
+scale = Vector2(20, 20)
 script = ExtResource("1_nkfdi")
-particleColor = Color(0, 0.647059, 0.941176, 1)
+particleRadius = 0.1
 gravity = 0.0
+collisionDamping = 1.0
+smoothingRadius = 0.6
+mass = 0.03
+targetDensity = 0.765
+pressureMultiplier = 6.345
+numParticles = 50
 particleSpacingPX = Vector2(12, 7)
 startPos = Vector2(0, 0)
 
